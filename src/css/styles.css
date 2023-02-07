@@ -1,3 +1,21 @@
 body {
   background-color: lightblue;
 }
+
+.inline {
+  display: inline-flex;
+  padding: 20px;
+  border-style:solid;
+  border-width: 10px;
+  border-color: black;
+  background-color:white;
+  margin: 5px;
+}
+
+.hidden {
+  font-size: 0;
+}
+
+.hideGame {
+  display:none;
+}

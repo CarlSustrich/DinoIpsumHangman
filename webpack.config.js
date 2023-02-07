@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // new line
 const ESLintPlugin = require('eslint-webpack-plugin');
@@ -14,12 +15,13 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   plugins: [
+    new Dotenv(),
     new ESLintPlugin(),
     new CleanWebpackPlugin({
       verbose: true
     }),
     new HtmlWebpackPlugin({
-      title: 'Shape Tracker',
+      title: 'Dino Ipsum Hangman',
       template: './src/index.html',
       inject: 'body'
     })

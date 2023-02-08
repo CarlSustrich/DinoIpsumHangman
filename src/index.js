@@ -4,6 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'simple-keyboard/build/css/index.css';
 import './css/styles.css';
 
+const keyboard = new Keyboard({
+  onKeyPress: button => onKeyPress(button)
+});
+
+
+function onKeyPress(button){
+  displayLetter(button);
+}
+
+
 function getDino() {
   let xhr = new XMLHttpRequest();
   let url = 'https://dinoipsum.com/api?format=json&paragraphs=1&words=1';
@@ -16,7 +26,6 @@ function getDino() {
     } else {
       printError(this, response);
     }
-    
   });
   document.querySelector("div.hideGame").removeAttribute("class");
   xhr.send();
@@ -36,27 +45,48 @@ function displayDino(response) {
   });
 }
 
-function displayLetter() {
-  const letter = document.getElementById("letterGuess").value.toUpperCase();
+
+
+
+function displayLetter(input) {
+  const letter = input.toUpperCase();
   const returnedArray = document.querySelectorAll(".hidden");
-  document.getElementById("guess").reset();
   let isItThere = false;
-  if(letter) {
-    let guessAmount = Number(document.getElementById("guessAmount").innerText);
-    document.getElementById("guessAmount").innerText = (guessAmount +1);
+
+  if(!letter.match(/^[a-z]+/gmi)) {
+    return false;
   }
+
+ 
+ 
+
+  //increasing guess count
+  let guessAmount = Number(document.getElementById("guessAmount").innerText);
+  document.getElementById("guessAmount").innerText = (guessAmount +1);
+
+
+//unhiding letter if guessed correctly
   returnedArray.forEach(function(element) {
     if (element.textContent === letter) {
       document.getElementById(`${element.id}`).classList.remove("hidden");
       isItThere = true;
     }
   });
-  if (!isItThere) {
-    let p = document.createElement("p");
-    let div = document.getElementById("usedLetters");
-    p.append(letter);
-    div.append(p);
+
+  let usedLettersArray = []
+  const usedLettersDiv = document.getElementById('usedLetters');
+  for (const child of usedLettersDiv.children) {
+    usedLettersArray.push(child.innerText);
   }
+
+
+//adding letters to the wrong guess list
+  if (!isItThere && !usedLettersArray.includes(letter)) {
+    let p = document.createElement("p");
+    p.append(letter);
+    usedLettersDiv.append(p);
+  }
+
   checkWinner();
 }
 
@@ -69,14 +99,8 @@ function checkWinner() {
   }
 }
 
-/*
-reach goals:
-maybeee add keyboard?
-*/
-
 function printError(request, response) {
 
 }
 
 document.getElementById('startGame').addEventListener('click', getDino);
-document.getElementById("submit").addEventListener("click", displayLetter);

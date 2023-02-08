@@ -19,3 +19,7 @@ body {
 .hideGame {
   display:none;
 }
+
+#usedLetters {
+  display: inline-flex;
+}
